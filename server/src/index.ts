@@ -28,6 +28,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Server start
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+const HOST = '0.0.0.0'; // 👈 add this
+
+app.listen(PORT, HOST, () => console.log(`✅ Server running on http://${HOST}:${PORT}`));
