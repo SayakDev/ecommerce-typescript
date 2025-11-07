@@ -2,7 +2,7 @@
 node_modules/
 
 # Compiled output (TypeScript build)
-dist/
+#dist/
 
 # Logs
 npm-debug.log*
