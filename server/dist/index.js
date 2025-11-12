@@ -8,6 +8,8 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const index_1 = __importDefault(require("./routes/index"));
+const db_config_1 = __importDefault(require("./config/db_config"));
+const user_model_1 = __importDefault(require("./models/user.model"));
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -21,11 +23,23 @@ app.get('/', (req, res) => {
 });
 // API Routes
 app.use('/api', index_1.default);
+app.post("/add-user", async (req, res) => {
+    try {
+        const { name, email, age } = req.body;
+        const newUser = await user_model_1.default.create({ name, email, age });
+        res.status(201).json({ message: "User created successfully", user: newUser });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to create user" });
+    }
+});
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Something went wrong!' });
 });
+(0, db_config_1.default)();
 const PORT = Number(process.env.PORT) || 5000;
 const HOST = '0.0.0.0'; // 👈 add this
 app.listen(PORT, HOST, () => console.log(`✅ Server running on http://${HOST}:${PORT}`));
